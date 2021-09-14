@@ -27,7 +27,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/getProperties", main.getAllProperties);
+app.get("/createProperty", main.createProperty);
 
+// GOOGLE_APPLICATION_CREDENTIALS="./secret/`ion-energy-solutions-293023-09c11dd2963b.json"
 
 
 app.listen(PORT, () => {
