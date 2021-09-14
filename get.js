@@ -39,6 +39,7 @@ const main = {
   },
 
   createProperty: async (req, res) => {
+    console.log("Create Property Chal rha hai");
     const bigquery = new BigQuery();
     const dataset = bigquery.dataset("ion_message_ingress");
     const table = dataset.table("H2O_Developer_Info");
@@ -46,18 +47,17 @@ const main = {
     //-
     // Insert a single row.
     //-
+    let { property, street, developer, managerName, contact, contactEmail } =
+      req.body;
 
-    let info = [
-      {
-        Property: "sdf",
-        Street: "sdf",
-        Developer: "sdf",
-        Manager: "dddd",
-        Street: "sddddddd",
-        Contact: "ssssssssssss",
-        Contact_Email: "sdfffffff",
-      },
-    ];
+    let row = {
+      Property: property,
+      Street: street,
+      Developer: developer,
+      Manager_Name: managerName,
+      Contact: contact,
+      Contact_Email: contactEmail,
+    };
 
     const options = {
       raw: true,
@@ -66,26 +66,35 @@ const main = {
     //-
     // If the callback is omitted, we'll return a Promise.
     //-
+
     table
-    .insert({rows: info,options,})
+      .insert(row)
       // .insert(info)
       .then((data) => {
-        console.log("🚀 ~ file: get.js ~ line 87 ~ .then ~ data", data);
+        res.status(200).send({
+          success: true,
+          message: "Property Created",
+          data,
+        });
         const apiResponse = data[0];
       })
       .catch((err) => {
-        if (err.name === 'PartialFailureError') {
+        res.status(200).send({
+          success: false,
+          message: "Something went wrong",
+        });
+        if (err.name === "PartialFailureError") {
           // for (const err of (e.errors as { errors: { message: string, reason: string }[], row: any }[])) {
-            // logger.error(err);
-             // err.errors (object[]):
-      // err.errors[0].row (original row object passed to `insert`)
-      // err.errors[].errors[].reason
-      // err.errors[].errors[].message
-          console.log("RRRr",err)
+          // logger.error(err);
+          // err.errors (object[]):
+          // err.errors[0].row (original row object passed to `insert`)
+          console.log(err.errors[0].errors);
+          // err.errors[].errors[].message
+          console.log("RRRr", err);
 
           // }
         } else {
-          console.log("RRRr",err)
+          console.log("RRRr", err);
           // logger.error(e);/
         }
       });
