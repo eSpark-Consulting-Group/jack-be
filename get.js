@@ -99,6 +99,20 @@ const main = {
         }
       });
   },
+
+  deleteProperty: async (req, res) => {
+    try {
+      const bigqueryClient = new BigQuery();
+
+      const dataset = bigqueryClient.dataset(datasetId);
+      console.log("🚀 ~ file: get.js ~ line 110 ~ delete: ~ dataset", dataset);
+    } catch (err) {
+      res.send({
+        success: false,
+        error: err.message || "Something went wrong",
+      });
+    }
+  },
 };
 
 module.exports = main;

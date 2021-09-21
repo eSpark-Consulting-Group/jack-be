@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
 
 app.get("/getProperties", main.getAllProperties);
 app.post("/createProperty", main.createProperty);
+app.post("/deleteProperty", main.deleteProperty);
 
 // GOOGLE_APPLICATION_CREDENTIALS="./secret/`ion-energy-solutions-293023-09c11dd2963b.json"
 
